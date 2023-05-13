@@ -107,7 +107,7 @@ class insideBank extends AdventureScene {
                 if (this.hasItem("drill")) {
                     this.loseItem("drill");
                     this.showMessage("*start drilling*");
-                    this.gotoScene('insidebank');
+                    this.gotoScene('tunnel');
                 }
             })
 
@@ -140,13 +140,31 @@ class insideBank extends AdventureScene {
                 this.showMessage("*Sneak out*");
                 this.gotoScene('insidebank');
             })
+    }
+}
+
+class tunnel extends AdventureScene {
+    constructor() {
+        super("tunnel", "You dig your way out with the money (Best Ending)");
+    }
+
+    preload() {
+        this.load.path = "./assets/";
+        this.load.image('tunnel', 'tunnel.png');
+    }
+
+    onEnter() {
+        const tunnel = this.add.image(600, 560, 'tunnel');
+        tunnel.setOrigin(0);
+        tunnel.setScale(.91);
+
         
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+        let bestfinish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
             .setInteractive()
             .on('pointerover', () => {
                 this.showMessage('*giggles*');
                 this.tweens.add({
-                    targets: finish,
+                    targets: bestfinish,
                     x: this.s + (this.h - 2 * this.s) * Math.random(),
                     y: this.s + (this.h - 2 * this.s) * Math.random(),
                     ease: 'Sine.inOut',
@@ -176,7 +194,7 @@ class Outro extends Phaser.Scene {
         super('outro');
     }
     create() {
-        this.add.text(50, 50, "That's all!").setFontSize(50);
+        this.add.text(50, 50, "Hope you enjoyed the heist!").setFontSize(50);
         this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
         this.input.on('pointerdown', () => this.scene.start('intro'));
     }
