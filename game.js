@@ -65,27 +65,82 @@ class BankFront extends AdventureScene {
             })
             bankDoor.on('pointerdown', () => {
                 this.showMessage("*whoosh*");
-                this.gotoScene('demo2');
+                this.gotoScene('insidebank');
             })
 
     }
 }
 
-class Demo2 extends AdventureScene {
+class insideBank extends AdventureScene {
     constructor() {
-        super("demo2", "The second room has a long name (it truly does).");
+        super("insidebank", "Time to choose an escape route");
     }
-    onEnter() {
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("You've got no other choice, really.");
-            })
-            .on('pointerdown', () => {
-                this.gotoScene('bankfront');
-            });
 
+    preload() {
+        this.load.path = "./assets/";
+        this.load.image('insidebank', 'insidebank.png');
+        this.load.image('tunnelarrow', 'tunnelarrow.png');
+        this.load.image('backdoorarrow', 'backdoorarrow.png');
+        this.load.image('sidedoorarrow', 'sidedoorarrow.png');
+    }
+
+    onEnter() {
+        const insidebank = this.add.image(600, 560, 'insidebank');
+        insidebank.setDepth(-1);
+        insidebank.setScale(.91);
+
+        let tunnelarrow = this.add.image(
+            1300,
+            563,
+            'tunnelarrow',
+            );
+            tunnelarrow.setInteractive()
+            tunnelarrow.setScale(.8)
+            tunnelarrow.on('pointerover', () => {
+                if (this.hasItem("drill")) {
+                    this.showMessage("Drill your way out");
+                } else {
+                    this.showMessage("How are you going to drill without a drill?");
+                }
+            })
+            tunnelarrow.on('pointerdown', () => {
+                if (this.hasItem("drill")) {
+                    this.loseItem("drill");
+                    this.showMessage("*start drilling*");
+                    this.gotoScene('insidebank');
+                }
+            })
+
+        let backdoorarrow = this.add.image(
+            700,
+            150,
+            'backdoorarrow',
+            );
+            backdoorarrow.setInteractive()
+            backdoorarrow.setScale(.8)
+            backdoorarrow.on('pointerover', () => {
+                this.showMessage("Run out the back with hostages");
+            })
+            backdoorarrow.on('pointerdown', () => {
+                this.showMessage("*Run*");
+                this.gotoScene('insidebank');
+            })
+
+        let sidedoorarrow = this.add.image(
+            150,
+            563,
+            'sidedoorarrow',
+            );
+            sidedoorarrow.setInteractive()
+            sidedoorarrow.setScale(.8)
+            sidedoorarrow.on('pointerover', () => {
+                this.showMessage("Leave the money and get out the side door");
+            })
+            sidedoorarrow.on('pointerdown', () => {
+                this.showMessage("*Sneak out*");
+                this.gotoScene('insidebank');
+            })
+        
         let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
             .setInteractive()
             .on('pointerover', () => {
@@ -135,7 +190,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, BankFront, Demo2, Outro],
+    scene: [Intro, BankFront, insideBank, Outro],
     title: "Adventure Game",
 });
 
