@@ -1,11 +1,21 @@
-class Demo1 extends AdventureScene {
+class BankFront extends AdventureScene {
     constructor() {
-        super("demo1", "First Room");
+        super("bankfront", "Lets get to work");
     }
 
+    preload() {
+        this.load.path = "./assets/";
+        this.load.image('drill', 'drill.png');
+        this.load.image('bankfront', 'bankfront.png');
+        this.load.image('bankdoor', 'bankdoor.png');
+    }
     onEnter() {
 
-        let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎 paperclip")
+        const bankfront = this.add.image(600, 560, 'bankfront');
+        bankfront.setDepth(-1);
+        bankfront.setScale(.91);
+
+        /*let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎 paperclip")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => this.showMessage("Metal, bent."))
@@ -19,43 +29,43 @@ class Demo1 extends AdventureScene {
                     ease: 'Sine.inOut',
                     duration: 100
                 });
-            });
+            });*/
 
-        let key = this.add.text(this.w * 0.5, this.w * 0.1, "🔑 key")
-            .setFontSize(this.s * 2)
-            .setInteractive()
+        let drill = this.add.image(
+            250,
+            1000,
+            'drill',
+            );
+            drill.setInteractive()
+            drill.setScale(.5)
             .on('pointerover', () => {
-                this.showMessage("It's a nice key.")
+                this.showMessage("This could be useful later.")
             })
             .on('pointerdown', () => {
-                this.showMessage("You pick up the key.");
-                this.gainItem('key');
+                this.showMessage("You put the drill in your bag.");
+                this.gainItem('drill');
                 this.tweens.add({
-                    targets: key,
+                    targets: drill,
                     y: `-=${2 * this.s}`,
                     alpha: { from: 1, to: 0 },
                     duration: 500,
-                    onComplete: () => key.destroy()
+                    onComplete: () => drill.destroy()
                 });
             })
 
-        let door = this.add.text(this.w * 0.1, this.w * 0.15, "🚪 locked door")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                if (this.hasItem("key")) {
-                    this.showMessage("You've got the key for this door.");
-                } else {
-                    this.showMessage("It's locked. Can you find a key?");
-                }
+        let bankDoor = this.add.image(
+            550,
+            563,
+            'bankdoor',
+            );
+            bankDoor.setInteractive()
+            bankDoor.setScale(.5)
+            bankDoor.on('pointerover', () => {
+                this.showMessage("Open the front door");
             })
-            .on('pointerdown', () => {
-                if (this.hasItem("key")) {
-                    this.loseItem("key");
-                    this.showMessage("*squeak*");
-                    door.setText("🚪 unlocked door");
-                    this.gotoScene('demo2');
-                }
+            bankDoor.on('pointerdown', () => {
+                this.showMessage("*whoosh*");
+                this.gotoScene('demo2');
             })
 
     }
@@ -73,7 +83,7 @@ class Demo2 extends AdventureScene {
                 this.showMessage("You've got no other choice, really.");
             })
             .on('pointerdown', () => {
-                this.gotoScene('demo1');
+                this.gotoScene('bankfront');
             });
 
         let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
@@ -97,11 +107,11 @@ class Intro extends Phaser.Scene {
         super('intro')
     }
     create() {
-        this.add.text(50,50, "Adventure awaits!").setFontSize(50);
+        this.add.text(50,50, "The Heist Adventure").setFontSize(50);
         this.add.text(50,100, "Click anywhere to begin.").setFontSize(20);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
-            this.time.delayedCall(1000, () => this.scene.start('demo1'));
+            this.time.delayedCall(1000, () => this.scene.start('bankfront'));
         });
     }
 }
@@ -125,7 +135,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, Demo1, Demo2, Outro],
+    scene: [Intro, BankFront, Demo2, Outro],
     title: "Adventure Game",
 });
 
