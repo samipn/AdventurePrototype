@@ -123,7 +123,7 @@ class insideBank extends AdventureScene {
             })
             backdoorarrow.on('pointerdown', () => {
                 this.showMessage("*Run*");
-                this.gotoScene('insidebank');
+                this.gotoScene('backdoor');
             })
 
         let sidedoorarrow = this.add.image(
@@ -138,7 +138,7 @@ class insideBank extends AdventureScene {
             })
             sidedoorarrow.on('pointerdown', () => {
                 this.showMessage("*Sneak out*");
-                this.gotoScene('insidebank');
+                this.gotoScene('sidedoor');
             })
     }
 }
@@ -162,9 +162,73 @@ class tunnel extends AdventureScene {
         let bestfinish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage('*giggles*');
+                this.showMessage('Not that easy');
                 this.tweens.add({
                     targets: bestfinish,
+                    x: this.s + (this.h - 2 * this.s) * Math.random(),
+                    y: this.s + (this.h - 2 * this.s) * Math.random(),
+                    ease: 'Sine.inOut',
+                    duration: 500
+                });
+            })
+            .on('pointerdown', () => this.gotoScene('outro'));
+    }
+}
+
+class sidedoor extends AdventureScene {
+    constructor() {
+        super("sidedoor", "You sneak your way out without any money though (Ok Ending)");
+    }
+
+    preload() {
+        this.load.path = "./assets/";
+        this.load.image('sidedoor', 'sidedoor.png');
+    }
+
+    onEnter() {
+        const tunnel = this.add.image(600, 560, 'sidedoor');
+        tunnel.setOrigin(0);
+        tunnel.setScale(.91);
+
+        
+        let okfinish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage('Not that easy');
+                this.tweens.add({
+                    targets: okfinish,
+                    x: this.s + (this.h - 2 * this.s) * Math.random(),
+                    y: this.s + (this.h - 2 * this.s) * Math.random(),
+                    ease: 'Sine.inOut',
+                    duration: 500
+                });
+            })
+            .on('pointerdown', () => this.gotoScene('outro'));
+    }
+}
+
+class backdoor extends AdventureScene {
+    constructor() {
+        super("backdoor", "You take the hostages out the back, but end up surrounded and arrested (Worst Ending)");
+    }
+
+    preload() {
+        this.load.path = "./assets/";
+        this.load.image('backdoor', 'backdoor.png');
+    }
+
+    onEnter() {
+        const tunnel = this.add.image(600, 560, 'backdoor');
+        tunnel.setOrigin(0);
+        tunnel.setScale(.91);
+
+        
+        let worstfinish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage('Not so easy');
+                this.tweens.add({
+                    targets: worstfinish,
                     x: this.s + (this.h - 2 * this.s) * Math.random(),
                     y: this.s + (this.h - 2 * this.s) * Math.random(),
                     ease: 'Sine.inOut',
