@@ -154,9 +154,12 @@ class tunnel extends AdventureScene {
     }
 
     onEnter() {
-        const tunnel = this.add.image(600, 560, 'tunnel');
+        this.cameras.main.setBackgroundColor('#5c4033');
+
+        const tunnel = this.add.image(0, 152, 'tunnel');
         tunnel.setOrigin(0);
-        tunnel.setScale(.91);
+        tunnel.setDepth(-1);
+        tunnel.setScale(.86);
 
         
         let bestfinish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
@@ -186,9 +189,13 @@ class sidedoor extends AdventureScene {
     }
 
     onEnter() {
-        const tunnel = this.add.image(600, 560, 'sidedoor');
-        tunnel.setOrigin(0);
-        tunnel.setScale(.91);
+        this.cameras.main.setBackgroundColor('#808080');
+
+        const sidedoor = this.add.image(0, 269, 'sidedoor');
+        sidedoor.setOrigin(0);
+        sidedoor.setDepth(-1);
+        sidedoor.setScale(.75);
+
 
         
         let okfinish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
@@ -218,9 +225,12 @@ class backdoor extends AdventureScene {
     }
 
     onEnter() {
-        const tunnel = this.add.image(600, 560, 'backdoor');
-        tunnel.setOrigin(0);
-        tunnel.setScale(.91);
+        this.cameras.main.setBackgroundColor('#808080');
+
+        const backdoor = this.add.image(0, 269, 'backdoor');
+        backdoor.setOrigin(0);
+        backdoor.setDepth(-1);
+        backdoor.setScale(.75);
 
         
         let worstfinish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
@@ -272,7 +282,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, BankFront, insideBank, Outro],
+    scene: [Intro, BankFront, insideBank, tunnel, sidedoor, backdoor, Outro],
     title: "Adventure Game",
 });
 
